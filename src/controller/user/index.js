@@ -12,6 +12,16 @@ const GetAllFromDB = async (req, res) => {
   });
 }
 
+const CheckUser = async (req,res)=>{
+    res.json({
+        success:true,
+        message:"User checked successfully",
+        user:req.user
+    })
+};
+
+
 export const UserController = {
-    GetAllFromDB
+    GetAllFromDB,
+    CheckUser
 }
