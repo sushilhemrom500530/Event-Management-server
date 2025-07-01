@@ -14,12 +14,14 @@ router.get(
 
 router.post(
   "/create",
+  AuthMiddleware,
   validateAndParseBody(EventValidation.Create),
   catchAsync(EventController.InsertIntoDB)
 );
 
 router.put(
   "/update/:id",
+  AuthMiddleware,
   catchAsync(EventController.UpdateIntoDB)
 );
 
@@ -30,16 +32,18 @@ router.get(
 
 router.delete(
   "/delete/:id",
+  AuthMiddleware,
   catchAsync(EventController.DeleteFromDB)
 );
 router.get(
   "/my-event/:id",
+  AuthMiddleware,
   catchAsync(EventController.GetMyEvent)
 );
 
 router.post(
   "/:event_id/join",
-  // AuthMiddleware,
+  AuthMiddleware,
   catchAsync(EventController.JoinEvent)
 );
 

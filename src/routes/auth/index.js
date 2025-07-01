@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post(
   "/signup",
-  fileUploader.upload.single("file"),
+  // fileUploader.upload.single("file"),
   validateAndParseBody(AuthValidation.SignUpSchema),
   catchAsync(AuthController.SignUp)
 );

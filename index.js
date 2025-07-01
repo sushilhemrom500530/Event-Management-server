@@ -3,10 +3,10 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
 import http from "http";
-import { AuthRoutes } from "./routes/auth/index.js";
-import globalErrorHandler from "./helpers/globalErrorHandler.js";
-import { EventRoutes } from "./routes/event/index.js";
-import { UserRoutes } from "./routes/user/index.js";
+import { AuthRoutes } from "./src/routes/auth/index.js";
+import { EventRoutes } from "./src/routes/event/index.js";
+import { UserRoutes } from "./src/routes/user/index.js";
+import globalErrorHandler from "./src/helpers/globalErrorHandler.js";
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ const server = http.createServer(app);
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "*",}));
 
 
 

@@ -9,7 +9,10 @@ const SignUpSchema = z.object({
   }).email(),
   password: z.string({
     required_error:"Password must be at least 6 characters"
-  }).min(6)
+  }),
+  photoUrl: z.string({
+    required_error:"Photo is required"
+  })
 });
 
 
@@ -19,7 +22,7 @@ const SignInSchema = z.object({
   }),
   password: z.string({
     required_error:"Password must be at least 6 characters"
-  }).min(6),
+  }),
 });
 
 export const AuthValidation = {
