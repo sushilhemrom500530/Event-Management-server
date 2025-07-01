@@ -4,9 +4,6 @@ import { sendResponse, sendError } from "../../helpers/sendResponse.js";
 import User from "../../models/user/index.js";
 import bcrypt from "bcrypt";
 
-
-
-
 const GetAllFromDB = async (req, res) => {
   const result = await User.find();
   sendResponse(res, {
@@ -16,27 +13,25 @@ const GetAllFromDB = async (req, res) => {
   });
 };
 
-
 const SignUp = async (req, res) => {
   const formValues = req.body;
-  if(!req.file){
-    return sendError(res, 404, "File not round");
-  }
+  // if(!req.file){
+  //   return sendError(res, 404, "File not round");
+  // }
   // file uploaded
-  if (req.file) {
-    const cloudResult = await fileUploader.uploadToCloudinary(req.file);
-    Object.assign(formValues, { photoUrl: cloudResult.secure_url });
-  }
-  console.log({ formValues });
+  // if (req.file) {
+  //   const cloudResult = await fileUploader.uploadToCloudinary(req.file);
+  //   Object.assign(formValues, { photoUrl: cloudResult.secure_url });
+  // }
+  // console.log({ formValues });
 
-  
   // Find user
   const userExists = await User.findOne({ email: formValues?.email });
 
   if (userExists) {
     return sendError(res, 409, "User already exists");
   }
-
+  // console.log(formValues);
   const hashedPassword = await bcrypt.hash(formValues?.password, 12);
   // Save to DB
   const newUser = await User.create({
@@ -45,6 +40,7 @@ const SignUp = async (req, res) => {
   });
 
   const token = createToken({
+    _id: newUser?._id,
     email: newUser?.email,
     password: newUser?.password,
   });
@@ -77,6 +73,7 @@ const SignIn = async (req, res) => {
   }
 
   const token = createToken({
+    _id: user?._id,
     email: user?.email,
     password: user?.password,
   });

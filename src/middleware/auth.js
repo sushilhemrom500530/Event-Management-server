@@ -31,21 +31,35 @@ export const AuthMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ success: false, message: "No token provided" });
+    const token =
+      authHeader && authHeader.startsWith("Bearer ")
+        ? authHeader.split(" ")[1]
+        : null;
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, message: "No token provided" });
     }
 
-    const token = authHeader.split(" ")[1];
     const decoded = verifyToken(token, process.env.JWT_SECRET_KEY);
+    // console.log({decoded});
 
     const user = await User.findById(decoded?._id).select("-password");
+      //  console.log({user});
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found!" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found!" });
     }
 
+ 
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({ success: false, message: error?.message || "User unauthorized!" });
+    return res.status(401).json({
+      success: false,
+      message: error?.message || "User unauthorized!",
+    });
   }
 };
